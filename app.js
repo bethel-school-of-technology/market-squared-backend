@@ -29,8 +29,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/post', postsRouter)
 
-models.sequelize.sync().then(function() {
+models.sequelize.sync().then(function () {
     console.log("DB Sync'd up")
-  });
+});
 
 module.exports = app;

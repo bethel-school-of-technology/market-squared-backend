@@ -30,57 +30,46 @@
         "users": {
             "tableName": "users",
             "schema": {
-                "UserId": {
+                "id": {
                     "allowNull": false,
-                    "autoIncrement": true,
                     "primaryKey": true,
-                    "field": "UserId",
+                    "autoIncrement": true,
+                    "field": "id",
                     "seqType": "Sequelize.INTEGER"
                 },
-                "FirstName": {
-                    "field": "FirstName",
+                "user_id": {
+                    "field": "user_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "first_name": {
+                    "field": "first_name",
                     "seqType": "Sequelize.STRING"
                 },
-                "LastName": {
-                    "field": "LastName",
+                "last_name": {
+                    "field": "last_name",
                     "seqType": "Sequelize.STRING"
                 },
-                "Email": {
-                    "unique": true,
-                    "field": "Email",
+                "email": {
+                    "field": "email",
                     "seqType": "Sequelize.STRING"
                 },
-                "Username": {
-                    "unique": true,
-                    "field": "Username",
+                "username": {
+                    "field": "username",
                     "seqType": "Sequelize.STRING"
                 },
-                "Password": {
-                    "field": "Password",
+                "password": {
+                    "field": "password",
                     "seqType": "Sequelize.STRING"
                 },
                 "createdAt": {
+                    "allowNull": false,
                     "field": "createdAt",
                     "seqType": "Sequelize.DATE"
                 },
                 "updatedAt": {
+                    "allowNull": false,
                     "field": "updatedAt",
                     "seqType": "Sequelize.DATE"
-                },
-                "Admin": {
-                    "allowNull": false,
-                    "defaultValue": {
-                        "value": false
-                    },
-                    "field": "Admin",
-                    "seqType": "Sequelize.BOOLEAN"
-                },
-                "Deleted": {
-                    "defaultValue": {
-                        "value": false
-                    },
-                    "field": "Deleted",
-                    "seqType": "Sequelize.BOOLEAN"
                 }
             },
             "indexes": []
