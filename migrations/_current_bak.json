@@ -50,10 +50,6 @@
                     "field": "zip_code",
                     "seqType": "Sequelize.INTEGER"
                 },
-                "DOB": {
-                    "field": "DOB",
-                    "seqType": "Sequelize.DATEONLY"
-                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -264,5 +260,5 @@
             "indexes": []
         }
     },
-    "revision": 4
+    "revision": 3
 }
