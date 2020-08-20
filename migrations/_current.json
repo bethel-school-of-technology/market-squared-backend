@@ -138,6 +138,10 @@
                     "field": "price",
                     "seqType": "Sequelize.INTEGER"
                 },
+                "description": {
+                    "field": "description",
+                    "seqType": "Sequelize.STRING"
+                },
                 "weight": {
                     "field": "weight",
                     "seqType": "Sequelize.INTEGER"

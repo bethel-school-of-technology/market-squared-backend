@@ -1,4 +1,7 @@
 'use strict';
+
+const { STRING } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
     const products = sequelize.define('products', {
         product_id: DataTypes.INTEGER,
@@ -12,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        description: DataTypes.STRING,
         weight: DataTypes.INTEGER,
         zip_code: DataTypes.INTEGER,
 
