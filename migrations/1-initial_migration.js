@@ -16,7 +16,7 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "initial_migration",
-    "created": "2020-08-18T19:43:26.556Z",
+    "created": "2020-08-19T21:47:05.271Z",
     "comment": ""
 };
 
@@ -165,6 +165,10 @@ var migrationCommands = [{
                     "type": Sequelize.INTEGER,
                     "field": "price",
                     "allowNull": false
+                },
+                "description": {
+                    "type": Sequelize.STRING,
+                    "field": "description"
                 },
                 "weight": {
                     "type": Sequelize.INTEGER,
