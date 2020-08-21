@@ -4,13 +4,26 @@ var models = require('../models');
 const mysq2 = require('mysql2')
 var authService = require('../services/auth');
 
+
 //CHANGE HBS VIEW - UNTESTED
-router.get('/', function(req, res, next) {
-res.redirect('/users/login')
+router.get('/', function (req, res, next) {
+  // models.users.findAll().then(user =>{
+  //   res.json(user)
+  // })
+  let user = {
+    name: 'Frodo Baggins',
+    username: 'username',
+    email: 'user@user.com'
+  }
+  res.json({
+    message: 'Successful',
+    status: 200,
+    user
+  })
 });
 
 //CHANGE HBS VIEW - UNTESTED
-router.get('/signup', function(req, res, next) {
+router.get('/signup', function (req, res, next) {
   res.render('signup');
 });
 
@@ -31,9 +44,10 @@ router.post('/signup', function (req, res, next) {
     })
     .spread(function (result, created) {
       if (created) {
-        res.redirect('User successfully created');
+        //never do redirect - needs all to be in frontend SEND JSON EVERYTIME
+        res.json('User successfully created');
       } else {
-        res.send('This user already exists');
+        res.json('This user already exists');
       }
     });
 });
@@ -51,7 +65,7 @@ router.post('/login', function (req, res, next) {
     }
   }).then(user => {
     if (!user) {
-     // console.log('User not found')
+      // console.log('User not found')
       return res.status(401).json({
         message: "Login Failed"
       });
@@ -62,7 +76,7 @@ router.post('/login', function (req, res, next) {
         res.cookie('jwt', token); // <--- Adds token to response as a cookie
         res.send('Howdy! You have logged in!');
       } else {
-       // console.log('Wrong password');
+        // console.log('Wrong password');
         res.send('Wrong password');
       }
     }
@@ -76,24 +90,24 @@ router.get('/logout', function (req, res, next) {
 });
 
 //WORKS
-router.post('/delete/:id', function(req, res, next) {
+router.post('/delete/:id', function (req, res, next) {
   let userId = parseInt(req.params.id);
   let token = req.cookies.jwt;
   authService.verifyUser(token)
-  .then(user => { 
-    if(user){
-      console.log(user)
-      models.users
-    .update(
-      { Deleted: true },
-      {
-        where: { UserId: userId }
+    .then(user => {
+      if (user) {
+        console.log(user)
+        models.users
+          .update(
+            { Deleted: true },
+            {
+              where: { UserId: userId }
+            }
+          )
+          .then(res.send('successfully deleted'));
       }
-    )
-    .then(res.send('successfully deleted'));
-    }
-    else res.send('CRAP')
-   })
+      else res.send('CRAP')
+    })
 });
 
 /*CHANGE HBS VIEW - UNTESTED
