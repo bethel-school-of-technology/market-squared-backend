@@ -14,45 +14,57 @@
                     "field": "buyer_id",
                     "seqType": "Sequelize.INTEGER"
                 },
-                "username": {
-                    "field": "username",
-                    "seqType": "Sequelize.STRING"
-                },
-                "password": {
-                    "field": "password",
-                    "seqType": "Sequelize.STRING"
-                },
                 "first_name": {
+                    "allowNull": false,
                     "field": "first_name",
                     "seqType": "Sequelize.STRING"
                 },
                 "last_name": {
+                    "allowNull": false,
                     "field": "last_name",
                     "seqType": "Sequelize.STRING"
                 },
                 "email": {
+                    "allowNull": false,
+                    "unique": true,
                     "field": "email",
                     "seqType": "Sequelize.STRING"
                 },
+                "username": {
+                    "allowNull": false,
+                    "unique": true,
+                    "field": "username",
+                    "seqType": "Sequelize.STRING"
+                },
+                "password": {
+                    "allowNull": false,
+                    "field": "password",
+                    "seqType": "Sequelize.STRING"
+                },
                 "address": {
+                    "allowNull": false,
                     "field": "address",
                     "seqType": "Sequelize.STRING"
                 },
                 "city": {
+                    "allowNull": false,
                     "field": "city",
                     "seqType": "Sequelize.STRING"
                 },
                 "state": {
+                    "allowNull": false,
                     "field": "state",
                     "seqType": "Sequelize.STRING"
                 },
                 "zip_code": {
+                    "allowNull": false,
                     "field": "zip_code",
                     "seqType": "Sequelize.INTEGER"
                 },
                 "DOB": {
+                    "allowNull": false,
                     "field": "DOB",
-                    "seqType": "Sequelize.DATEONLY"
+                    "seqType": "Sequelize.STRING"
                 },
                 "createdAt": {
                     "allowNull": false,
@@ -113,6 +125,7 @@
                     "seqType": "Sequelize.INTEGER"
                 },
                 "product_name": {
+                    "allowNull": false,
                     "field": "product_name",
                     "seqType": "Sequelize.STRING"
                 },
@@ -121,6 +134,7 @@
                     "seqType": "Sequelize.STRING"
                 },
                 "price": {
+                    "allowNull": false,
                     "field": "price",
                     "seqType": "Sequelize.INTEGER"
                 },
@@ -131,10 +145,6 @@
                 "zip_code": {
                     "field": "zip_code",
                     "seqType": "Sequelize.INTEGER"
-                },
-                "test": {
-                    "field": "test",
-                    "seqType": "Sequelize.STRING"
                 },
                 "createdAt": {
                     "allowNull": false,
@@ -163,45 +173,57 @@
                     "field": "seller_id",
                     "seqType": "Sequelize.INTEGER"
                 },
-                "username": {
-                    "field": "username",
-                    "seqType": "Sequelize.STRING"
-                },
-                "password": {
-                    "field": "password",
-                    "seqType": "Sequelize.STRING"
-                },
                 "first_name": {
+                    "allowNull": false,
                     "field": "first_name",
                     "seqType": "Sequelize.STRING"
                 },
                 "last_name": {
+                    "allowNull": false,
                     "field": "last_name",
                     "seqType": "Sequelize.STRING"
                 },
                 "email": {
+                    "allowNull": false,
+                    "unique": true,
                     "field": "email",
                     "seqType": "Sequelize.STRING"
                 },
+                "username": {
+                    "allowNull": false,
+                    "unique": true,
+                    "field": "username",
+                    "seqType": "Sequelize.STRING"
+                },
+                "password": {
+                    "allowNull": false,
+                    "field": "password",
+                    "seqType": "Sequelize.STRING"
+                },
                 "address": {
+                    "allowNull": false,
                     "field": "address",
                     "seqType": "Sequelize.STRING"
                 },
                 "city": {
+                    "allowNull": false,
                     "field": "city",
                     "seqType": "Sequelize.STRING"
                 },
                 "state": {
+                    "allowNull": false,
                     "field": "state",
                     "seqType": "Sequelize.STRING"
                 },
                 "zip_code": {
+                    "allowNull": false,
                     "field": "zip_code",
                     "seqType": "Sequelize.INTEGER"
                 },
                 "DOB": {
+                    "allowNull": false,
                     "field": "DOB",
-                    "seqType": "Sequelize.DATEONLY"
+                    "seqType": "Sequelize.STRING"
                 },
                 "createdAt": {
                     "allowNull": false,
@@ -231,23 +253,33 @@
                     "seqType": "Sequelize.INTEGER"
                 },
                 "first_name": {
+                    "allowNull": false,
                     "field": "first_name",
                     "seqType": "Sequelize.STRING"
                 },
                 "last_name": {
+                    "allowNull": false,
                     "field": "last_name",
                     "seqType": "Sequelize.STRING"
                 },
                 "email": {
+                    "allowNull": false,
+                    "unique": true,
                     "field": "email",
                     "seqType": "Sequelize.STRING"
                 },
                 "username": {
+                    "allowNull": false,
+                    "unique": true,
                     "field": "username",
                     "seqType": "Sequelize.STRING"
                 },
                 "password": {
                     "field": "password",
+                    "seqType": "Sequelize.STRING"
+                },
+                "admin": {
+                    "field": "admin",
                     "seqType": "Sequelize.STRING"
                 },
                 "createdAt": {
@@ -264,5 +296,5 @@
             "indexes": []
         }
     },
-    "revision": 4
+    "revision": 1
 }
