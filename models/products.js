@@ -11,13 +11,18 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         product_type: DataTypes.STRING,
+        category: DataTypes.STRING,
         price: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
         description: DataTypes.STRING,
         weight: DataTypes.INTEGER,
-        zip_code: DataTypes.INTEGER,
+        zip_code: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+
 
     }, {});
     products.associate = function (models) {
