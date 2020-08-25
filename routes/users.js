@@ -5,21 +5,19 @@ const mysq2 = require('mysql2')
 var authService = require('../services/auth');
 
 
-//CHANGE HBS VIEW - UNTESTED
+
 router.get('/', function (req, res, next) {
-  // models.users.findAll().then(user =>{
-  //   res.json(user)
-  // })
-  let user = {
-    name: 'Frodo Baggins',
-    username: 'username',
-    email: 'user@user.com'
-  }
-  res.json({
-    message: 'Successful',
-    status: 200,
-    user
+  models.users.findAll().then(user =>{
+    res.json(user)
   })
+  // res.json([
+  //   user = {
+  //     firstName: 'Frodo',
+  //     lastName: 'Baggins',
+  //     username: 'username',
+  //     email: 'user@user.com'
+  //   }
+  // ])
 });
 
 //CHANGE HBS VIEW - UNTESTED
@@ -27,19 +25,19 @@ router.get('/signup', function (req, res, next) {
   res.render('signup');
 });
 
-//WORKS
+//Untested
 // Create new user if one doesn't exist
 router.post('/signup', function (req, res, next) {
   models.users
     .findOrCreate({
       where: {
-        Username: req.body.userName
+        username: req.body.username
       },
       defaults: {
-        FirstName: req.body.firstName,
-        LastName: req.body.lastName,
-        Email: req.body.email,
-        Password: authService.hashPassword(req.body.password)
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        email: req.body.email,
+        password: authService.hashPassword(req.body.password)
       }
     })
     .spread(function (result, created) {
@@ -56,7 +54,7 @@ router.post('/signup', function (req, res, next) {
 //   res.render('login');
 // });
 
-//WORKS
+//Untested
 // Login user and return JWT as cookie
 router.post('/login', function (req, res, next) {
   models.users.findOne({

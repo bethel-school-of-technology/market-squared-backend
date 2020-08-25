@@ -253,7 +253,6 @@
                     "seqType": "Sequelize.INTEGER"
                 },
                 "user_id": {
-                    "autoincrement": true,
                     "field": "user_id",
                     "seqType": "Sequelize.INTEGER"
                 },
@@ -301,5 +300,5 @@
             "indexes": []
         }
     },
-    "revision": 2
+    "revision": 1
 }
