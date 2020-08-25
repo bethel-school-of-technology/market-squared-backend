@@ -16,7 +16,7 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "initial_migration",
-    "created": "2020-08-19T21:47:05.271Z",
+    "created": "2020-08-25T19:54:02.331Z",
     "comment": ""
 };
 
@@ -107,16 +107,34 @@ var migrationCommands = [{
         params: [
             "posts",
             {
-                "id": {
+                "post_id": {
                     "type": Sequelize.INTEGER,
-                    "field": "id",
+                    "field": "post_id",
                     "autoIncrement": true,
                     "primaryKey": true,
                     "allowNull": false
                 },
-                "content": {
+                "user_id": {
+                    "type": Sequelize.INTEGER,
+                    "field": "user_id"
+                },
+                "title": {
                     "type": Sequelize.STRING,
-                    "field": "content"
+                    "field": "title",
+                    "allowNull": false
+                },
+                "category": {
+                    "type": Sequelize.STRING,
+                    "field": "category"
+                },
+                "price": {
+                    "type": Sequelize.INTEGER,
+                    "field": "price",
+                    "allowNull": false
+                },
+                "description": {
+                    "type": Sequelize.INTEGER,
+                    "field": "description"
                 },
                 "createdAt": {
                     "type": Sequelize.DATE,
@@ -161,6 +179,10 @@ var migrationCommands = [{
                     "type": Sequelize.STRING,
                     "field": "product_type"
                 },
+                "category": {
+                    "type": Sequelize.STRING,
+                    "field": "category"
+                },
                 "price": {
                     "type": Sequelize.INTEGER,
                     "field": "price",
@@ -174,9 +196,25 @@ var migrationCommands = [{
                     "type": Sequelize.INTEGER,
                     "field": "weight"
                 },
+                "address": {
+                    "type": Sequelize.STRING,
+                    "field": "address",
+                    "allowNull": false
+                },
+                "city": {
+                    "type": Sequelize.STRING,
+                    "field": "city",
+                    "allowNull": false
+                },
+                "state": {
+                    "type": Sequelize.STRING,
+                    "field": "state",
+                    "allowNull": false
+                },
                 "zip_code": {
                     "type": Sequelize.INTEGER,
-                    "field": "zip_code"
+                    "field": "zip_code",
+                    "allowNull": false
                 },
                 "createdAt": {
                     "type": Sequelize.DATE,
@@ -279,16 +317,12 @@ var migrationCommands = [{
         params: [
             "users",
             {
-                "id": {
+                "user_id": {
                     "type": Sequelize.INTEGER,
-                    "field": "id",
+                    "field": "user_id",
                     "autoIncrement": true,
                     "primaryKey": true,
                     "allowNull": false
-                },
-                "user_id": {
-                    "type": Sequelize.INTEGER,
-                    "field": "user_id"
                 },
                 "first_name": {
                     "type": Sequelize.STRING,
