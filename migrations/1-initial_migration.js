@@ -16,7 +16,7 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "initial_migration",
-    "created": "2020-08-25T19:54:02.331Z",
+    "created": "2020-08-25T20:17:40.066Z",
     "comment": ""
 };
 
@@ -196,21 +196,6 @@ var migrationCommands = [{
                     "type": Sequelize.INTEGER,
                     "field": "weight"
                 },
-                "address": {
-                    "type": Sequelize.STRING,
-                    "field": "address",
-                    "allowNull": false
-                },
-                "city": {
-                    "type": Sequelize.STRING,
-                    "field": "city",
-                    "allowNull": false
-                },
-                "state": {
-                    "type": Sequelize.STRING,
-                    "field": "state",
-                    "allowNull": false
-                },
                 "zip_code": {
                     "type": Sequelize.INTEGER,
                     "field": "zip_code",
@@ -346,12 +331,32 @@ var migrationCommands = [{
                     "unique": true,
                     "allowNull": false
                 },
+                "address": {
+                    "type": Sequelize.STRING,
+                    "field": "address",
+                    "allowNull": false
+                },
+                "city": {
+                    "type": Sequelize.STRING,
+                    "field": "city",
+                    "allowNull": false
+                },
+                "state": {
+                    "type": Sequelize.STRING,
+                    "field": "state",
+                    "allowNull": false
+                },
+                "zip_code": {
+                    "type": Sequelize.INTEGER,
+                    "field": "zip_code",
+                    "allowNull": false
+                },
                 "password": {
                     "type": Sequelize.STRING,
                     "field": "password"
                 },
                 "admin": {
-                    "type": Sequelize.STRING,
+                    "type": Sequelize.BOOLEAN,
                     "field": "admin"
                 },
                 "createdAt": {
