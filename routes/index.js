@@ -2,13 +2,12 @@ var express = require('express');
 var router = express.Router();
 const mysql2 = require('mysql2')
 const mysql = require('mysql');
-var staticModels = require('../staticModels/peeps');
 
 var connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'Password1!',
-  database: 'UsersDB'
+  database: 'marketsquared'
 });
 
 connection.connect(function (err) {
@@ -24,13 +23,6 @@ router.get('/', function (req, res, next) {
 
 });
 
-//Test for frontend connection
-router.get('/staticData', function (req, res, next) {
-
-  res.send(JSON.stringify(
-    staticModels.peeps
-  ));
-});
 
 
 module.exports = router;
