@@ -10,19 +10,6 @@ router.get('/', function (req, res, next) {
   models.users.findAll().then(user =>{
     res.json(user)
   })
-  // res.json([
-  //   user = {
-  //     firstName: 'Frodo',
-  //     lastName: 'Baggins',
-  //     username: 'username',
-  //     email: 'user@user.com'
-  //   }
-  // ])
-});
-
-//CHANGE HBS VIEW - UNTESTED
-router.get('/signup', function (req, res, next) {
-  res.render('signup');
 });
 
 //Untested
