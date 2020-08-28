@@ -13,39 +13,6 @@ router.get('/', function (req, res, next) {
 });
 
 //Untested
-// Create new user if one doesn't exist
-router.post('/signup', function (req, res, next) {
-  models.users
-    .findOrCreate({
-      where: {
-        username: req.body.username
-      },
-      defaults: {
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        email: req.body.email,
-        password: authService.hashPassword(req.body.password),
-        address: req.body.address,
-        city: req.body.city,
-        state: req.body.state,
-        zip_code: req.body.zip_code,
-      }
-    })
-    .spread(function (result, created) {
-      if (created) {
-        //never do redirect - needs all to be in frontend SEND JSON EVERYTIME
-        res.json('User successfully created');
-      } else {
-        res.json('This user already exists');
-      }
-    });
-});
-
-// router.get('/login', function(req, res, next) {
-//   res.render('login');
-// });
-
-//Untested
 // Login user and return JWT as cookie
 router.post('/login', function (req, res, next) {
   models.users.findOne({
@@ -174,30 +141,6 @@ router.get('/admin/editUser/:id', function (req, res, next) {
     res.send('Must be logged in');
   }
 });
-
-router.get('/profile/:id', function (req, res, next) {
-  //  if (!req.isAuthenticated()) {
-  //  return res.send('You are not authenticated');
-  //  }
-  if (req.params.id !== String(req.user.UserId)) {
-    res.send('This is not your profile');
-  } else {
-    let status;
-    if (req.user.Admin) {
-      status = 'Admin';
-    } else {
-      status = 'Normal user';
-    }
-
-    res.render('profile', {
-      FirstName: req.user.FirstName,
-      LastName: req.user.LastName,
-      Email: req.user.Email,
-      UserId: req.user.UserId,
-      Username: req.user.Username,
-      Status: status
-    });
-  }
-});
 */
+
 module.exports = router;
