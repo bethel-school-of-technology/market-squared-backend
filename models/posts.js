@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    description: DataTypes.INTEGER, 
+    description: DataTypes.STRING, 
   }, {});
   posts.associate = function(models) {
     // associations can be defined here
