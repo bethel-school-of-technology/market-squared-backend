@@ -4,7 +4,6 @@ const mysql2 = require('mysql2')
 const mysql = require('mysql');
 var models = require('../models');
 var authService = require('../services/auth');
-const { post } = require('./posts');
 
 var connection = mysql.createConnection({
   host: 'localhost',
@@ -23,7 +22,7 @@ connection.connect(function (err) {
 
 /* GET home page. */
 router.get('/profile', function (req, res, next) {
-  models.users.findOne().then(user =>{
+  models.users.findOne().then(user => {
     res.json(user)
   })
 });
@@ -56,59 +55,61 @@ router.post('/', function (req, res, next) {
     });
 });
 
-//Create Post UNTESTED
-router.post('/createPost', function (req, res, next) {
-  let token = req.cookies.jwt;
-  models.user
-    authService.verifyUser(token).then(user => {
-      if (post) {
-        models.posts
-          .findOrCreate({
-            where: {
-              user_id: user.UserId,
-              post_title: req.body.PostTitle,
-              description: req.body.Description,
-              price: req.body.Price,
-              category: req.body.Category
-          }})
-              .spread(function (result, created) {
-              if (created) {
-                res.redirect('/myposts');
-              } else {
-                res.send('Error. Post not created');
-              }
-            });
-      }});
-  }
-  );
-
-  //Login UNTESTED
-  router.post('/login', function (req, res, next) {
-    models.users.findOne({
+//Create Post Works! Needs user asscociations to append user id properly
+router.post('/create', function (req, res, next) {
+  //let token = req.cookies.jwt;
+  // models.user
+  // authService.verifyUser(token).then(user => {
+  // if (post) {
+  models.posts
+    .findOrCreate({
       where: {
-        username: req.body.userName
+        // user_id: user.UserId,
+        user_id: req.body.UserId,
+        title: req.body.PostTitle,
+        description: req.body.Description,
+        price: req.body.Price,
+        category: req.body.Category
       }
-    }).then(user => {
-      if (!user) {
-        // console.log('User not found')
-        return res.status(401).json({
-          message: "Login Failed"
-        });
+    })
+    .spread(function (result, created) {
+      if (created) {
+        res.send('created');
       } else {
-        let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
-        if (passwordMatch) {
-          let token = authService.signUser(user); // <--- Uses the authService to create jwt token
-          res.cookie('jwt', token); // <--- Adds token to response as a cookie
-          res.send('Howdy! You have logged in!');
-        } else {
-          // console.log('Wrong password');
-          res.send('Wrong password');
-        }
+        res.send('Error. Post not created');
       }
     });
-  });
+  //   }});
+}
+);
 
-  //Pulls specific user UNTESTED
+//Login UNTESTED
+router.post('/login', function (req, res, next) {
+  models.users.findOne({
+    where: {
+      username: req.body.userName
+    }
+  }).then(user => {
+    if (!user) {
+      // console.log('User not found')
+      return res.status(401).json({
+        message: "Login Failed"
+      });
+    } else {
+      let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
+      if (passwordMatch) {
+        let token = authService.signUser(user); // <--- Uses the authService to create jwt token
+        res.cookie('jwt', token); // <--- Adds token to response as a cookie
+        res.send('Howdy! You have logged in!');
+      } else {
+        // console.log('Wrong password');
+        res.send('Wrong password');
+      }
+    }
+  });
+});
+
+//Pulls specific user UNTESTED
 router.get('/profile/:id', function (req, res, next) {
   //  if (!req.isAuthenticated()) {
   //  return res.send('You are not authenticated');
@@ -132,7 +133,7 @@ router.get('/profile/:id', function (req, res, next) {
       Status: status
     });
   }
-  
+
 });
 
 // Display profile ONLY SHOWS USER 1
@@ -142,13 +143,13 @@ router.get('/profile', function (req, res, next) {
     authService.verifyUser(token).then(user => {
       if (user) {
         models.users.findOne({
-            where: { 
-              user_name: user.Username 
-            }
-          }).then(user => {
-           console.log(user)
-              res.json(user);
-          });
+          where: {
+            user_name: user.Username
+          }
+        }).then(user => {
+          console.log(user)
+          res.json(user);
+        });
       }
     });
   } else {

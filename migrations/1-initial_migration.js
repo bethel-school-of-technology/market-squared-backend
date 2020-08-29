@@ -133,7 +133,7 @@ var migrationCommands = [{
                     "allowNull": false
                 },
                 "description": {
-                    "type": Sequelize.INTEGER,
+                    "type": Sequelize.STRING,
                     "field": "description"
                 },
                 "createdAt": {
