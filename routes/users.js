@@ -4,45 +4,10 @@ var models = require('../models');
 const mysq2 = require('mysql2')
 var authService = require('../services/auth');
 
-
-
 router.get('/', function (req, res, next) {
   models.users.findAll().then(user =>{
     res.json(user)
   })
-});
-
-//Untested
-// Login user and return JWT as cookie
-router.post('/login', function (req, res, next) {
-  models.users.findOne({
-    where: {
-      Username: req.body.userName
-    }
-  }).then(user => {
-    if (!user) {
-      // console.log('User not found')
-      return res.status(401).json({
-        message: "Login Failed"
-      });
-    } else {
-      let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
-      if (passwordMatch) {
-        let token = authService.signUser(user); // <--- Uses the authService to create jwt token
-        res.cookie('jwt', token); // <--- Adds token to response as a cookie
-        res.send('Howdy! You have logged in!');
-      } else {
-        // console.log('Wrong password');
-        res.send('Wrong password');
-      }
-    }
-  });
-});
-
-//WORKS
-router.get('/logout', function (req, res, next) {
-  res.cookie('jwt', "", { expires: new Date(0) });
-  res.send('Logout Succeeded');
 });
 
 //WORKS

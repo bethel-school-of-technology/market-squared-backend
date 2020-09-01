@@ -4,6 +4,7 @@ const mysql2 = require('mysql2')
 const mysql = require('mysql');
 var models = require('../models');
 var authService = require('../services/auth');
+const { post } = require('./users');
 
 var connection = mysql.createConnection({
   host: 'localhost',
@@ -26,6 +27,33 @@ router.get('/profile', function (req, res, next) {
     res.json(user)
   })
 });
+
+// Login user and return JWT as cookie
+router.post('/login', function (req, res, next) {
+  models.users.findOne({
+    where: {
+      username: req.body.username
+    }
+  }).then(user => {
+    if (!user) {
+    //  console.log('User not found')
+      return res.status(401).json({
+        message: "User Login Failed"
+      });
+    } else {
+      let passwordMatch = authService.comparePasswords(req.body.password, user.password);
+      if (passwordMatch) {
+        let token = authService.signUser(user); // <--- Uses the authService to create jwt token
+        res.cookie('jwt', token); // <--- Adds token to response as a cookie
+        res.send('Howdy! You have logged in!');
+      } else {
+        // console.log('Wrong password');
+        res.send('Wrong password');
+      }
+    }
+  });
+});
+
 
 // Creates a New User
 router.post('/', function (req, res, next) {
@@ -83,32 +111,6 @@ router.post('/create', function (req, res, next) {
 }
 );
 
-//Login UNTESTED
-router.post('/login', function (req, res, next) {
-  models.users.findOne({
-    where: {
-      username: req.body.userName
-    }
-  }).then(user => {
-    if (!user) {
-      // console.log('User not found')
-      return res.status(401).json({
-        message: "Login Failed"
-      });
-    } else {
-      let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
-      if (passwordMatch) {
-        let token = authService.signUser(user); // <--- Uses the authService to create jwt token
-        res.cookie('jwt', token); // <--- Adds token to response as a cookie
-        res.send('Howdy! You have logged in!');
-      } else {
-        // console.log('Wrong password');
-        res.send('Wrong password');
-      }
-    }
-  });
-});
-
 //Pulls specific user UNTESTED
 router.get('/profile/:id', function (req, res, next) {
   //  if (!req.isAuthenticated()) {
@@ -156,6 +158,34 @@ router.get('/profile', function (req, res, next) {
     res.status(401);
     res.send('Must be logged in');
   }
+});
+
+router.get('/myposts', function (req, res, next) {
+  let token = req.cookies.jwt;
+  if (token) {
+  authService.verifyUser(token).then(user => {
+    if (user) {
+  models.posts
+    .findAll({
+       where: { user_id: user.user_id }
+    })
+    .then(post => res.json({ post }));
+      } else {
+          res.status(401);
+        res.send("Invalid authentication token");
+      }
+    });
+  } else {
+    res.status(401);
+    res.send('Must be logged in');
+  }
+});
+
+
+
+router.get('/logout', function (req, res, next) {
+  res.cookie('jwt', "", { expires: new Date(0) });
+  res.send('Logout Succeeded');
 });
 
 module.exports = router;
