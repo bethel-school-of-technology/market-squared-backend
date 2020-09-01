@@ -22,10 +22,47 @@ connection.connect(function (err) {
 })
 
 /* GET home page. */
-router.get('/profile', function (req, res, next) {
-  models.users.findOne().then(user => {
+// router.get('/profile', function (req, res, next) {
+//   models.users.findOne().then(user => {
+//     res.json(user)
+//   })
+// });
+
+/*Pulls specific user UNTESTED
+router.get('/profile/:id', function (req, res, next) {
+   models.users.findOne({where: {
+    user_id: req.params.user_id
+  }}).then(user => {
     res.json(user)
   })
+});
+*/
+
+router.get('/profile/:id', function (req, res, next) {
+  models.users.findByPk(parseInt(req.params.id))
+  .then(user => {res.json(user)
+  })
+  });
+
+router.get('/profile', function (req, res, next) {
+  let token = req.cookies.jwt;
+  if (token) {
+    authService.verifyUser(token).then(user => {
+      if (user) {
+        models.users.findOne({
+            where: { 
+              username: user.username 
+            }
+          }).then(user => {
+           // console.log(userpostsFound)
+              res.json(user);
+          });
+      }
+    });
+  } else {
+    res.status(401);
+    res.send('Must be logged in');
+  }
 });
 
 // Login user and return JWT as cookie
@@ -110,55 +147,6 @@ router.post('/create', function (req, res, next) {
   //   }});
 }
 );
-
-//Pulls specific user UNTESTED
-router.get('/profile/:id', function (req, res, next) {
-  //  if (!req.isAuthenticated()) {
-  //  return res.send('You are not authenticated');
-  //  }
-  if (req.params.id !== String(req.user.user_id)) {
-    res.send('Login first');
-  } else {
-    let status;
-    if (req.user.Admin) {
-      status = 'Admin';
-    } else {
-      status = 'Normal user';
-    }
-
-    res.send('profile', {
-      FirstName: req.user.FirstName,
-      LastName: req.user.LastName,
-      Email: req.user.Email,
-      UserId: req.user.UserId,
-      Username: req.user.Username,
-      Status: status
-    });
-  }
-
-});
-
-// Display profile ONLY SHOWS USER 1
-router.get('/profile', function (req, res, next) {
-  let token = req.cookies.jwt;
-  if (token) {
-    authService.verifyUser(token).then(user => {
-      if (user) {
-        models.users.findOne({
-          where: {
-            user_name: user.Username
-          }
-        }).then(user => {
-          console.log(user)
-          res.json(user);
-        });
-      }
-    });
-  } else {
-    res.status(401);
-    res.send('Must be logged in');
-  }
-});
 
 router.get('/myposts', function (req, res, next) {
   let token = req.cookies.jwt;
