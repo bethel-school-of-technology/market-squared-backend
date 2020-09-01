@@ -6,9 +6,9 @@ var authService = {
   signUser: function(user) {
     const token = jwt.sign(
       {
-        Username: user.Username,
-        UserId: user.UserId,
-        Admin: user.Admin
+        username: user.username,
+        user_id: user.user_id,
+        admin: user.Admin
       },
       'secretkey',
       {
@@ -21,7 +21,7 @@ var authService = {
   verifyUser: function (token) {  //<--- receive JWT token as parameter
     try {
       let decoded = jwt.verify(token, 'secretkey'); //<--- Decrypt token using same key used to encrypt
-      return models.users.findByPk(decoded.UserId); //<--- Return result of database query as promise
+      return models.users.findByPk(decoded.user_id); //<--- Return result of database query as promise
     } catch (err) {
       console.log(err);
       return null;
