@@ -40,9 +40,10 @@ router.get('/profile/:id', function (req, res, next) {
 
 router.get('/profile/:id', function (req, res, next) {
   models.users.findByPk(parseInt(req.params.id))
-  .then(user => {res.json(user)
-  })
-  });
+    .then(user => {
+      res.json(user)
+    })
+});
 
 router.get('/profile', function (req, res, next) {
   let token = req.cookies.jwt;
@@ -50,13 +51,13 @@ router.get('/profile', function (req, res, next) {
     authService.verifyUser(token).then(user => {
       if (user) {
         models.users.findOne({
-            where: { 
-              username: user.username 
-            }
-          }).then(user => {
-           // console.log(userpostsFound)
-              res.json(user);
-          });
+          where: {
+            username: user.username
+          }
+        }).then(user => {
+          // console.log(userpostsFound)
+          res.json(user);
+        });
       }
     });
   } else {
@@ -73,7 +74,7 @@ router.post('/login', function (req, res, next) {
     }
   }).then(user => {
     if (!user) {
-    //  console.log('User not found')
+      //  console.log('User not found')
       return res.status(401).json({
         message: "User Login Failed"
       });
@@ -151,15 +152,15 @@ router.post('/create', function (req, res, next) {
 router.get('/myposts', function (req, res, next) {
   let token = req.cookies.jwt;
   if (token) {
-  authService.verifyUser(token).then(user => {
-    if (user) {
-  models.posts
-    .findAll({
-        where: { user_id: user.user_id }
-    })
-    .then(post => res.json({ post }));
+    authService.verifyUser(token).then(user => {
+      if (user) {
+        models.posts
+          .findAll({
+            where: { user_id: user.user_id }
+          })
+          .then(post => res.json({ post }));
       } else {
-          res.status(401);
+        res.status(401);
         res.send("Invalid authentication token");
       }
     });
