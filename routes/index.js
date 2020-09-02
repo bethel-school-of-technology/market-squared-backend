@@ -100,8 +100,8 @@ router.post('/', function (req, res, next) {
         username: req.body.username
       },
       defaults: {
-        first_name: req.body.firstName,
-        last_name: req.body.lastName,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
         email: req.body.email,
         password: authService.hashPassword(req.body.password),
         address: req.body.address,
@@ -155,7 +155,7 @@ router.get('/myposts', function (req, res, next) {
     if (user) {
   models.posts
     .findAll({
-       where: { user_id: user.user_id }
+        where: { user_id: user.user_id }
     })
     .then(post => res.json({ post }));
       } else {
