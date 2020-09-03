@@ -66,6 +66,18 @@ router.get('/profile', function (req, res, next) {
   }
 });
 
+// Update User
+router.put("/profile/:id", function (req, res, next) {
+  let userId = parseInt(req.params.id);
+  models.users
+    .update(req.body, { where: { user_id: userId } })
+    .then(result => res.redirect('/profile/' + userId))
+    .catch(err => {
+      res.status(400);
+      res.send("There was a problem updating the user.  Please check the user information.");
+    });
+});
+
 // Login user and return JWT as cookie
 router.post('/login', function (req, res, next) {
   models.users.findOne({
