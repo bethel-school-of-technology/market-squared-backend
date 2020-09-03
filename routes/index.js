@@ -83,10 +83,10 @@ router.post('/login', function (req, res, next) {
       if (passwordMatch) {
         let token = authService.signUser(user); // <--- Uses the authService to create jwt token
         res.cookie('jwt', token); // <--- Adds token to response as a cookie
-        res.send('Howdy! You have logged in!');
+        res.json({token});
       } else {
         // console.log('Wrong password');
-        res.send('Wrong password');
+        res.json('Wrong password');
       }
     }
   });
