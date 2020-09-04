@@ -10,6 +10,12 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       type: DataTypes.INTEGER
     },
+
+    post_delete: {
+      allowNull:false,
+      primaryKey: true,
+      type: DataTypes.BOOLEAN
+    },
     user_id: DataTypes.INTEGER,
     title: {
       type: DataTypes.STRING,
@@ -20,6 +26,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+
+    description: DataTypes.INTEGER, 
     description: DataTypes.STRING, 
   }, {});
   posts.associate = function(models) {

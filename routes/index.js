@@ -98,7 +98,7 @@ router.post('/login', function (req, res, next) {
         res.json({ token: token });
       } else {
         // console.log('Wrong password');
-        res.send('Wrong password');
+        res.json('Wrong password');
       }
     }
   });
