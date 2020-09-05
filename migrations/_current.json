@@ -109,7 +109,7 @@
                 },
                 "description": {
                     "field": "description",
-                    "seqType": "Sequelize.INTEGER"
+                    "seqType": "Sequelize.STRING"
                 },
                 "createdAt": {
                     "allowNull": false,

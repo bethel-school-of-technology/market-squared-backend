@@ -21,23 +21,6 @@ connection.connect(function (err) {
   console.log('Yay! You are connected to the database!');
 })
 
-/* GET home page. */
-// router.get('/profile', function (req, res, next) {
-//   models.users.findOne().then(user => {
-//     res.json(user)
-//   })
-// });
-
-/*Pulls specific user UNTESTED
-router.get('/profile/:id', function (req, res, next) {
-   models.users.findOne({where: {
-    user_id: req.params.user_id
-  }}).then(user => {
-    res.json(user)
-  })
-});
-*/
-
 router.get('/profile/:id', function (req, res, next) {
   models.users.findByPk(parseInt(req.params.id))
     .then(user => {

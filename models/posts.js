@@ -1,7 +1,5 @@
 'use strict';
-
-const { STRING, INTEGER } = require("sequelize");
-
+//const { STRING, INTEGER } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   const posts = sequelize.define('posts', {
     post_id: {
@@ -10,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       type: DataTypes.INTEGER
     },
-
     post_delete: {
       allowNull:false,
       primaryKey: true,
@@ -25,11 +22,11 @@ module.exports = (sequelize, DataTypes) => {
     price: {
       type: DataTypes.INTEGER,
       allowNull: false
-    },
-
-    description: DataTypes.INTEGER, 
+    }, 
     description: DataTypes.STRING, 
-  }, {});
+  },
+  {}
+  );
   posts.associate = function(models) {
     // associations can be defined here
   };
