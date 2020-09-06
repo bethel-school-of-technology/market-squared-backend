@@ -9,8 +9,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     post_delete: {
-      allowNull:false,
-      primaryKey: true,
       type: DataTypes.BOOLEAN
     },
     user_id: DataTypes.INTEGER,
