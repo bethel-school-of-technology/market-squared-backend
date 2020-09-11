@@ -4,8 +4,13 @@ var models = require('../models');
 const mysq2 = require('mysql2')
 var authService = require('../services/auth');
 
+//trying to pull all users and associate their posts with them to pull into the homepage cards. Still working on this
 router.get('/', function (req, res, next) {
-  models.users.findAll().then(user =>{
+  models.users.findAll(
+    //   {include: [
+    //     { model: models.posts, where: { user_id: user_id.user_id } }
+    // ]}
+  ).then(user =>{
     res.json(user)
   })
 });

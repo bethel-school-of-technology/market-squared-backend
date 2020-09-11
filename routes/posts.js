@@ -4,11 +4,15 @@ var models = require('../models');
 const mysq2 = require('mysql2')
 var authService = require('../services/auth');
 
-router.get('/', function (req, res, next) {
-  models.posts.findAll().then(post =>{
-    res.json(post)
-  })
-});
+// router.get('/', function (req, res, next) {
+//   models.posts.findAll({
+//     include: [
+//         { model: models.users, where: { user_id: user_id } }
+//     ]
+// }).then(post =>{
+//     res.json(post)
+//   })
+// });
 
 //WORKS
 router.post('/delete/:id', function (req, res, next) {

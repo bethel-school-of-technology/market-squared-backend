@@ -21,6 +21,17 @@ connection.connect(function (err) {
   console.log('Yay! You are connected to the database!');
 })
 
+//trying to pull all posts and associate their users with them to pull into the homepage cards. Still working on this
+router.get('/posts', function (req, res, next) {
+  models.posts.findAll(
+    // {include: [
+    //     { model: models.users, where: { user_id: user_id } }
+    // ]}
+    ).then(post =>{
+    res.json(post)
+  })
+});
+
 router.get('/profile/:id', function (req, res, next) {
   models.users.findByPk(parseInt(req.params.id))
     .then(user => {
@@ -107,9 +118,9 @@ router.post('/', function (req, res, next) {
       }
     })
     .spread(function (result, created) {
-      if (created) {
+      if (created, result) {
         //never do redirect - needs all to be in frontend SEND JSON EVERYTIME
-        res.json('User successfully created');
+        res.json(result);
       } else {
         res.json('This user already exists');
       }
@@ -144,25 +155,9 @@ router.post('/create', function (req, res, next) {
 }
 );
 
-router.get('/myposts', function (req, res, next) {
-  let token = req.cookies.jwt;
-  if (token) {
-    authService.verifyUser(token).then(user => {
-      if (user) {
-        models.posts
-          .findAll({
-            where: { user_id: user.user_id }
-          })
+router.get('/myposts/:id', function (req, res, next) {
+        models.posts.findByPk(parseInt(req.params.id))
           .then(post => res.json({ post }));
-      } else {
-        res.status(401);
-        res.send("Invalid authentication token");
-      }
-    });
-  } else {
-    res.status(401);
-    res.send('Must be logged in');
-  }
 });
 
 
