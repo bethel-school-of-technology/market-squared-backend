@@ -4,7 +4,16 @@ const mysql2 = require('mysql2')
 const mysql = require('mysql');
 var models = require('../models');
 var authService = require('../services/auth');
-const { post } = require('./users');
+
+//Associations for routes
+models.users.hasMany(models.posts, 
+  { 
+    foreignKey: 'user_id' 
+  });
+models.posts.belongsTo(models.users,
+   { 
+  foreignKey: 'user_id',
+ });
 
 var connection = mysql.createConnection({
   host: 'localhost',
@@ -21,12 +30,10 @@ connection.connect(function (err) {
   console.log('Yay! You are connected to the database!');
 })
 
-//trying to pull all posts and associate their users with them to pull into the homepage cards. Still working on this
+//Gets all posts into home page and asscociates them with their user
 router.get('/posts', function (req, res, next) {
   models.posts.findAll(
-    // {include: [
-    //     { model: models.users, where: { user_id: user_id } }
-    // ]}
+    {include: models.users }
     ).then(post =>{
     res.json(post)
   })
@@ -39,6 +46,20 @@ router.get('/profile/:id', function (req, res, next) {
     })
 });
 
+router.get('/myposts/:id', function (req, res, next) {
+  models.users.findByPk(parseInt(req.params.id))
+    .then(user => {
+      if (user) {
+      models.posts.findAll({
+        where: {
+          user_id: posts.user_id
+        }
+      }).then(post => {
+          res.json(post);
+        });
+      }
+    })});
+    
 router.get('/profile', function (req, res, next) {
   let token = req.cookies.jwt;
   if (token) {
@@ -49,7 +70,6 @@ router.get('/profile', function (req, res, next) {
             username: user.username
           }
         }).then(user => {
-          // console.log(userpostsFound)
           res.json(user);
         });
       }
@@ -72,7 +92,7 @@ router.put("/profile/:id", function (req, res, next) {
     });
 });
 
-// Login user and return JWT as cookie
+// Login user and return JWT token
 router.post('/login', function (req, res, next) {
   models.users.findOne({
     where: {
@@ -89,7 +109,7 @@ router.post('/login', function (req, res, next) {
       if (passwordMatch) {
         let token = authService.signUser(user); // <--- Uses the authService to create jwt token
         //res.cookie('jwt', token); // <--- Adds token to response as a cookie
-        res.json({ token: token });
+        res.json({ token });
       } else {
         // console.log('Wrong password');
         res.json('Wrong password');
@@ -119,7 +139,6 @@ router.post('/', function (req, res, next) {
     })
     .spread(function (result, created) {
       if (created, result) {
-        //never do redirect - needs all to be in frontend SEND JSON EVERYTIME
         res.json(result);
       } else {
         res.json('This user already exists');
@@ -154,13 +173,6 @@ router.post('/create', function (req, res, next) {
   //   }});
 }
 );
-
-router.get('/myposts/:id', function (req, res, next) {
-        models.posts.findByPk(parseInt(req.params.id))
-          .then(post => res.json({ post }));
-});
-
-
 
 router.get('/logout', function (req, res, next) {
   res.cookie('jwt', "", { expires: new Date(0) });
