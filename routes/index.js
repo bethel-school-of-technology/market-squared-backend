@@ -46,19 +46,13 @@ router.get('/profile/:id', function (req, res, next) {
     })
 });
 
-router.get('/myposts/:id', function (req, res, next) {
-  models.users.findByPk(parseInt(req.params.id))
-    .then(user => {
-      if (user) {
-      models.posts.findAll({
-        where: {
-          user_id: posts.user_id
-        }
-      }).then(post => {
-          res.json(post);
-        });
-      }
-    })});
+router.get('/myposts', function (req, res, next) {
+  models.posts.findAll(
+    {include: models.users }
+    ).then(post =>{
+    res.json(post)
+  })
+});
     
 router.get('/profile', function (req, res, next) {
   let token = req.cookies.jwt;
@@ -175,7 +169,7 @@ router.post('/create', function (req, res, next) {
 );
 
 router.get('/logout', function (req, res, next) {
-  res.cookie('jwt', "", { expires: new Date(0) });
+  localStorage.clear();
   res.send('Logout Succeeded');
 });
 
