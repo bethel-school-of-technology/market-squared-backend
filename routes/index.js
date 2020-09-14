@@ -53,6 +53,14 @@ router.get('/myposts', function (req, res, next) {
     res.json(post)
   })
 });
+
+router.get('/post/:id', function (req, res, next) {
+  models.posts.findByPk(parseInt(req.params.id),{include: models.users })
+    .then(post => {
+      console.log(post)
+      res.json(post)
+    })
+});
     
 router.get('/profile', function (req, res, next) {
   let token = req.cookies.jwt;
