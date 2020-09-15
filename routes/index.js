@@ -96,7 +96,7 @@ router.put("/profile/:id", function (req, res, next) {
   let userId = parseInt(req.params.id);
   models.users
     .update(req.body, { where: { user_id: userId } })
-    .then(result => res.redirect('/profile/' + userId))
+    .then(result => res.json('/profile/' + userId))
     .catch(err => {
       res.status(400);
       res.send("There was a problem updating the user.  Please check the user information.");
