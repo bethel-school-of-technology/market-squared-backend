@@ -54,6 +54,15 @@ router.get('/myposts', function (req, res, next) {
   })
 });
 
+router.get('/myposts/:id', function (req, res, next) {
+  models.users.findByPk(parseInt(req.params.id),{include: models.posts})
+    .then(post => {
+      console.log(post)
+      res.json(post)
+    })
+});
+
+
 router.get('/post/:id', function (req, res, next) {
   models.posts.findByPk(parseInt(req.params.id),{include: models.users })
     .then(post => {
