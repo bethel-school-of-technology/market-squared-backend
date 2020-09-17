@@ -5,24 +5,24 @@ module.exports = (sequelize, DataTypes) => {
     post_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      allowNull:false
-      
-  
-    //},
-    //post_delete: {
-    //  type: DataTypes.BOOLEAN
+      allowNull: false,
+      autoIncrement: true
+
+
+      //},
+      //post_delete: {
+      //  type: DataTypes.BOOLEAN
     },
 
-user_id: {
-    type: DataTypes.INTEGER,
-      primaryKey: true,
-      allowNull:false,
-      unique: true
-},  
-    
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+
+    },
+
     title: {
       type: DataTypes.STRING,
-      allowNull: false 
+      allowNull: false
     },
     category: {
       type: DataTypes.STRING,
@@ -31,30 +31,30 @@ user_id: {
     price: {
       type: DataTypes.INTEGER,
       allowNull: false
-    }, 
+    },
     description: {
       type: DataTypes.STRING,
       allowNull: false
     },
-// "fc just added this code in!"
-createdAt: {
-  type: DataTypes.DATE, 
-  allowNull: false
-  },
-  updatedAt: {
-  type: DataTypes.DATE, 
-  allowNull: false
-  },
-
-
-
-    post_delete: DataTypes.BOOLEAN
+    // "fc just added this code in!"
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false
     },
-  
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    post_delete: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
 
-  {}
+    },
+
+  },
+    {}
   );
-  posts.associate = function(models) {
+  posts.associate = function (models) {
     // associations can be defined here
   };
   return posts;
