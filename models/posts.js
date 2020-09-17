@@ -3,26 +3,55 @@
 module.exports = (sequelize, DataTypes) => {
   const posts = sequelize.define('posts', {
     post_id: {
-      allowNull:false,
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: true,
-      type: DataTypes.INTEGER
+      allowNull:false
+      
+  
+    //},
+    //post_delete: {
+    //  type: DataTypes.BOOLEAN
     },
-    post_delete: {
-      type: DataTypes.BOOLEAN
-    },
-    user_id: DataTypes.INTEGER,
+
+user_id: {
+    type: DataTypes.INTEGER,
+      primaryKey: true,
+      allowNull:false,
+      unique: true
+},  
+    
     title: {
+      type: DataTypes.STRING,
+      allowNull: false 
+    },
+    category: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    category: DataTypes.STRING,
     price: {
       type: DataTypes.INTEGER,
       allowNull: false
     }, 
-    description: DataTypes.STRING, 
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+// "fc just added this code in!"
+createdAt: {
+  type: DataTypes.DATE, 
+  allowNull: false
   },
+  updatedAt: {
+  type: DataTypes.DATE, 
+  allowNull: false
+  },
+
+
+
+    post_delete: DataTypes.BOOLEAN
+    },
+  
+
   {}
   );
   posts.associate = function(models) {

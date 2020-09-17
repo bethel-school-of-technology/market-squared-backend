@@ -113,10 +113,13 @@ var migrationCommands = [{
                     "autoIncrement": true,
                     "primaryKey": true,
                     "allowNull": false
+                  
                 },
                 "user_id": {
                     "type": Sequelize.INTEGER,
-                    "field": "user_id"
+                    "field": "user_id",
+                    "primaryKey": true,
+                    "allowNull": false
                 },
                 "title": {
                     "type": Sequelize.STRING,
@@ -353,11 +356,16 @@ var migrationCommands = [{
                 },
                 "password": {
                     "type": Sequelize.STRING,
-                    "field": "password"
+                    "field": "password",
+                    "unique": true,
+                    "allowNull": false
+
                 },
                 "admin": {
                     "type": Sequelize.BOOLEAN,
-                    "field": "admin"
+                    "field": "admin",
+                    "allowNull": false
+                    
                 },
                 "createdAt": {
                     "type": Sequelize.DATE,
