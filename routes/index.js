@@ -46,19 +46,44 @@ router.get('/profile/:id', function (req, res, next) {
     })
 });
 
+
 router.get('/myposts/:id', function (req, res, next) {
-  models.users.findByPk(parseInt(req.params.id))
-    .then(user => {
-      if (user) {
-      models.posts.findAll({
-        where: {
-          user_id: posts.user_id
-        }
-      }).then(post => {
-          res.json(post);
-        });
-      }
-    })});
+  models.users.findByPk(parseInt(req.params.id),{include: models.posts})
+    .then(post => {
+      console.log(post)
+      res.json(post)
+    })
+});
+
+
+router.get('/post/:id', function (req, res, next) {
+  models.posts.findByPk(parseInt(req.params.id),{include: models.users })
+    .then(post => {
+      console.log(post)
+      res.json(post)
+    })
+});
+
+router.get('/myposts', function (req, res, next) {
+  models.posts.findAll(
+    {include: models.users }
+    ).then(post =>{
+    res.json(post)
+  })
+});
+//* update post
+router.put("/editpost/:id", function (req, res, next) {
+  let postId = parseInt(req.params.id);
+  models.posts
+    .update(req.body, { where: { post_id: postId } })
+    .then(result => res.json('/editpost/' + postId))
+    .catch(err => {
+      res.status(400);
+      res.send("There was a problem updating the post.  Please check the post information.");
+    });
+});
+
+
     
 router.get('/profile', function (req, res, next) {
   let token = req.cookies.jwt;
@@ -85,7 +110,7 @@ router.put("/profile/:id", function (req, res, next) {
   let userId = parseInt(req.params.id);
   models.users
     .update(req.body, { where: { user_id: userId } })
-    .then(result => res.redirect('/profile/' + userId))
+    .then(result => res.json('/profile/' + userId))
     .catch(err => {
       res.status(400);
       res.send("There was a problem updating the user.  Please check the user information.");
@@ -175,7 +200,7 @@ router.post('/create', function (req, res, next) {
 );
 
 router.get('/logout', function (req, res, next) {
-  res.cookie('jwt', "", { expires: new Date(0) });
+  localStorage.clear();
   res.send('Logout Succeeded');
 });
 
