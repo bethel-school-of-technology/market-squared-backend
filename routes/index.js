@@ -46,13 +46,6 @@ router.get('/profile/:id', function (req, res, next) {
     })
 });
 
-router.get('/myposts', function (req, res, next) {
-  models.posts.findAll(
-    {include: models.users }
-    ).then(post =>{
-    res.json(post)
-  })
-});
 
 router.get('/myposts/:id', function (req, res, next) {
   models.users.findByPk(parseInt(req.params.id),{include: models.posts})
@@ -70,6 +63,27 @@ router.get('/post/:id', function (req, res, next) {
       res.json(post)
     })
 });
+
+router.get('/myposts', function (req, res, next) {
+  models.posts.findAll(
+    {include: models.users }
+    ).then(post =>{
+    res.json(post)
+  })
+});
+//* update post
+router.put("/editpost/:id", function (req, res, next) {
+  let postId = parseInt(req.params.id);
+  models.posts
+    .update(req.body, { where: { post_id: postId } })
+    .then(result => res.json('/editpost/' + postId))
+    .catch(err => {
+      res.status(400);
+      res.send("There was a problem updating the post.  Please check the post information.");
+    });
+});
+
+
     
 router.get('/profile', function (req, res, next) {
   let token = req.cookies.jwt;
