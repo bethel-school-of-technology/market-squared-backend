@@ -5,31 +5,6 @@ const mysql = require('mysql');
 var models = require('../models');
 var authService = require('../services/auth');
 
-//Associations for routes
-/* models.users.hasMany(models.posts,
-  {
-    foreignKey: 'user_id'
-  });
-models.posts.belongsTo(models.users,
-  {
-    foreignKey: 'user_id',
-  });
-
-var connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'Password1!',
-  database: 'marketsquared'
-});
-
-connection.connect(function (err) {
-  if (err) {
-    console.error(err.message);
-    return;
-  }
-  console.log('Yay! You are connected to the database!');
-}) */
-
 //Gets all posts into home page and asscociates them with their user
 // look into this route
 router.get('/posts', function (req, res, next) {
@@ -72,6 +47,8 @@ router.get('/post/:id', function (req, res, next) {
     })
 });
 
+
+// IS THIS STILL BEING USED?
 router.get('/profile', function (req, res, next) {
   let token = req.headers["jwt"];
   console.log(token)
@@ -93,17 +70,6 @@ router.get('/profile', function (req, res, next) {
   }
 });
 
-// Update User
-router.put("/profile/:id", function (req, res, next) {
-  let userId = parseInt(req.params.id);
-  models.users
-    .update(req.body, { where: { user_id: userId } })
-    .then(result => res.json('/profile/' + userId))
-    .catch(err => {
-      res.status(400);
-      res.send("There was a problem updating the user.  Please check the user information.");
-    });
-});
 
 // Login user and return JWT token
 router.post('/login', function (req, res, next) {
@@ -159,57 +125,8 @@ router.post('/', function (req, res, next) {
     });
 });
 
-/* //Create Post Works! Needs user asscociations to append user id properly
-router.post('/create', function (req, res, next) {
-  //let token = req.cookies.jwt;
-  // models.user
-  // authService.verifyUser(token).then(user => {
-  // if (post) {
-  models.posts
-    .findOrCreate({
-      where: {
-        // user_id: user.UserId,
-        user_id: req.body.UserId,
-        title: req.body.PostTitle,
-        description: req.body.Description,
-        price: req.body.Price,
-        category: req.body.Category
-      }
-    })
-    .spread(function (result, created) {
-      if (created) {
-        res.send('created');
-      } else {
-        res.send('Error. Post not created');
-      }
-    });
-  //   }});
-}
-);
- */
 
-//Create Post 
-/* router.post('/create', function (req, res, next) {
-  models.posts
-    .findOrCreate({
-      where: {
-        user_id: req.body.user_id,
-        title: req.body.title,
-        description: req.body.description,
-        price: req.body.price,
-        category: req.body.category
-      }
-    })
-    .spread(function (result, created) {
-      if (created) {
-        res.send(result);
-      } else {
-        res.send('Error. Post not created');
-      }
-    });
-}
-); */
-
+//Create Post?
 router.post('/create', function (req, res, next) {
   let token = req.headers["jwt"];
   console.log(token)
@@ -246,12 +163,14 @@ router.post('/create', function (req, res, next) {
   }
 });
 
+
+
 // Update User
 router.put("/profile/:id", function (req, res, next) {
   let userId = parseInt(req.params.id);
   models.users
     .update(req.body, { where: { user_id: userId } })
-    .then(result => res.redirect('/profile/' + userId))
+    .then(result => res.json('/profile/' + userId))
     .catch(err => {
       res.status(400);
       res.send("There was a problem updating the user.  Please check the user information.");
@@ -264,5 +183,113 @@ router.get('/logout', function (req, res, next) {
 });
 
 
+// Update Post
+router.put("/editpost/:id", function (req, res, next) {
+  let postId = parseInt(req.params.id);
+  models.posts
+    .update(req.body, { where: { post_id: postId } })
+    .then(result => res.json('/editpost/' + postId))
+    .catch(err => {
+      res.status(400);
+      res.send("There was a problem updating the post.  Please check the post information.");
+    });
+});
+
 
 module.exports = router;
+
+
+
+
+
+
+
+//////////////////////// UNUSED STUFF ////////////////////////
+
+//Associations for routes
+/* models.users.hasMany(models.posts,
+  {
+    foreignKey: 'user_id'
+  });
+models.posts.belongsTo(models.users,
+  {
+    foreignKey: 'user_id',
+  });
+
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'Password1!',
+  database: 'marketsquared'
+});
+
+connection.connect(function (err) {
+  if (err) {
+    console.error(err.message);
+    return;
+  }
+  console.log('Yay! You are connected to the database!');
+}) */
+
+/* //Create Post Works! Needs user asscociations to append user id properly
+router.post('/create', function (req, res, next) {
+  //let token = req.cookies.jwt;
+  // models.user
+  // authService.verifyUser(token).then(user => {
+  // if (post) {
+  models.posts
+    .findOrCreate({
+      where: {
+        // user_id: user.UserId,
+        user_id: req.body.UserId,
+        title: req.body.PostTitle,
+        description: req.body.Description,
+        price: req.body.Price,
+        category: req.body.Category
+      }
+    })
+    .spread(function (result, created) {
+      if (created) {
+        res.send('created');
+      } else {
+        res.send('Error. Post not created');
+      }
+    });
+  //   }});
+}
+);
+ */
+
+/*Create Post 
+router.post('/create', function (req, res, next) {
+  models.posts
+    .findOrCreate({
+      where: {
+        user_id: req.body.user_id,
+        title: req.body.title,
+        description: req.body.description,
+        price: req.body.price,
+        category: req.body.category
+      }
+    })
+    .spread(function (result, created) {
+      if (created) {
+        res.send(result);
+      } else {
+        res.send('Error. Post not created');
+      }
+    });
+}
+); */
+
+/* Update User - OLD
+router.put("/profile/:id", function (req, res, next) {
+  let userId = parseInt(req.params.id);
+  models.users
+    .update(req.body, { where: { user_id: userId } })
+    .then(result => res.redirect('/profile/' + userId))
+    .catch(err => {
+      res.status(400);
+      res.send("There was a problem updating the user.  Please check the user information.");
+    });
+});*/
