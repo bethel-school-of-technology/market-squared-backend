@@ -6,14 +6,14 @@ var models = require('../models');
 var authService = require('../services/auth');
 
 //Associations for routes
-models.users.hasMany(models.posts, 
-  { 
-    foreignKey: 'user_id' 
+/* models.users.hasMany(models.posts,
+  {
+    foreignKey: 'user_id'
   });
 models.posts.belongsTo(models.users,
-   { 
-  foreignKey: 'user_id',
- });
+  {
+    foreignKey: 'user_id',
+  });
 
 var connection = mysql.createConnection({
   host: 'localhost',
@@ -28,13 +28,14 @@ connection.connect(function (err) {
     return;
   }
   console.log('Yay! You are connected to the database!');
-})
+}) */
 
 //Gets all posts into home page and asscociates them with their user
+// look into this route
 router.get('/posts', function (req, res, next) {
   models.posts.findAll(
-    {include: models.users }
-    ).then(post =>{
+    { include: models.users }
+  ).then(post => {
     res.json(post)
   })
 });
@@ -46,9 +47,16 @@ router.get('/profile/:id', function (req, res, next) {
     })
 });
 
+router.get('/myposts', function (req, res, next) {
+  models.posts.findAll(
+    { include: models.users }
+  ).then(post => {
+    res.json(post)
+  })
+});
 
 router.get('/myposts/:id', function (req, res, next) {
-  models.users.findByPk(parseInt(req.params.id),{include: models.posts})
+  models.users.findByPk(parseInt(req.params.id), { include: models.posts })
     .then(post => {
       console.log(post)
       res.json(post)
@@ -57,36 +65,16 @@ router.get('/myposts/:id', function (req, res, next) {
 
 
 router.get('/post/:id', function (req, res, next) {
-  models.posts.findByPk(parseInt(req.params.id),{include: models.users })
+  models.posts.findByPk(parseInt(req.params.id), { include: models.users })
     .then(post => {
       console.log(post)
       res.json(post)
     })
 });
 
-router.get('/myposts', function (req, res, next) {
-  models.posts.findAll(
-    {include: models.users }
-    ).then(post =>{
-    res.json(post)
-  })
-});
-//* update post
-router.put("/editpost/:id", function (req, res, next) {
-  let postId = parseInt(req.params.id);
-  models.posts
-    .update(req.body, { where: { post_id: postId } })
-    .then(result => res.json('/editpost/' + postId))
-    .catch(err => {
-      res.status(400);
-      res.send("There was a problem updating the post.  Please check the post information.");
-    });
-});
-
-
-    
 router.get('/profile', function (req, res, next) {
-  let token = req.cookies.jwt;
+  let token = req.headers["jwt"];
+  console.log(token)
   if (token) {
     authService.verifyUser(token).then(user => {
       if (user) {
@@ -171,7 +159,7 @@ router.post('/', function (req, res, next) {
     });
 });
 
-//Create Post Works! Needs user asscociations to append user id properly
+/* //Create Post Works! Needs user asscociations to append user id properly
 router.post('/create', function (req, res, next) {
   //let token = req.cookies.jwt;
   // models.user
@@ -198,10 +186,83 @@ router.post('/create', function (req, res, next) {
   //   }});
 }
 );
+ */
+
+//Create Post 
+/* router.post('/create', function (req, res, next) {
+  models.posts
+    .findOrCreate({
+      where: {
+        user_id: req.body.user_id,
+        title: req.body.title,
+        description: req.body.description,
+        price: req.body.price,
+        category: req.body.category
+      }
+    })
+    .spread(function (result, created) {
+      if (created) {
+        res.send(result);
+      } else {
+        res.send('Error. Post not created');
+      }
+    });
+}
+); */
+
+router.post('/create', function (req, res, next) {
+  let token = req.headers["jwt"];
+  console.log(token)
+  if (token) {
+      authService.verifyUser(token).then(user => {
+          if (user) {
+            console.log(user)
+            models.posts
+            .findOrCreate({
+              where: {
+                
+                title: req.body.title,
+                
+              },
+              defaults: {
+                user_id: user.user_id,
+                description: req.body.description,
+                price: req.body.price,
+                category: req.body.category
+              }
+            })
+            .spread(function (result, created) {
+              if (created) {
+                res.send(result);
+              } else {
+                res.send('Error. Post not created');
+              }
+            });
+          }
+      });
+  } else {
+      res.status(401);
+      res.send('Must be logged in');
+  }
+});
+
+// Update User
+router.put("/profile/:id", function (req, res, next) {
+  let userId = parseInt(req.params.id);
+  models.users
+    .update(req.body, { where: { user_id: userId } })
+    .then(result => res.redirect('/profile/' + userId))
+    .catch(err => {
+      res.status(400);
+      res.send("There was a problem updating the user.  Please check the user information.");
+    });
+});
 
 router.get('/logout', function (req, res, next) {
   localStorage.clear();
   res.send('Logout Succeeded');
 });
+
+
 
 module.exports = router;

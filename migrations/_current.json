@@ -1,96 +1,24 @@
 {
     "tables": {
-        "buyers": {
-            "tableName": "buyers",
-            "schema": {
-                "id": {
-                    "allowNull": false,
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "buyer_id": {
-                    "field": "buyer_id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "first_name": {
-                    "allowNull": false,
-                    "field": "first_name",
-                    "seqType": "Sequelize.STRING"
-                },
-                "last_name": {
-                    "allowNull": false,
-                    "field": "last_name",
-                    "seqType": "Sequelize.STRING"
-                },
-                "email": {
-                    "allowNull": false,
-                    "unique": true,
-                    "field": "email",
-                    "seqType": "Sequelize.STRING"
-                },
-                "username": {
-                    "allowNull": false,
-                    "unique": true,
-                    "field": "username",
-                    "seqType": "Sequelize.STRING"
-                },
-                "password": {
-                    "allowNull": false,
-                    "field": "password",
-                    "seqType": "Sequelize.STRING"
-                },
-                "address": {
-                    "allowNull": false,
-                    "field": "address",
-                    "seqType": "Sequelize.STRING"
-                },
-                "city": {
-                    "allowNull": false,
-                    "field": "city",
-                    "seqType": "Sequelize.STRING"
-                },
-                "state": {
-                    "allowNull": false,
-                    "field": "state",
-                    "seqType": "Sequelize.STRING"
-                },
-                "zip_code": {
-                    "allowNull": false,
-                    "field": "zip_code",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "DOB": {
-                    "allowNull": false,
-                    "field": "DOB",
-                    "seqType": "Sequelize.STRING"
-                },
-                "createdAt": {
-                    "allowNull": false,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updatedAt": {
-                    "allowNull": false,
-                    "field": "updatedAt",
-                    "seqType": "Sequelize.DATE"
-                }
-            },
-            "indexes": []
-        },
         "posts": {
             "tableName": "posts",
             "schema": {
                 "post_id": {
-                    "allowNull": false,
                     "primaryKey": true,
+                    "allowNull": false,
                     "autoIncrement": true,
                     "field": "post_id",
                     "seqType": "Sequelize.INTEGER"
                 },
                 "user_id": {
+                    "allowNull": false,
                     "field": "user_id",
+                    "references": {
+                        "model": "users",
+                        "key": "user_id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
                     "seqType": "Sequelize.INTEGER"
                 },
                 "title": {
@@ -99,6 +27,7 @@
                     "seqType": "Sequelize.STRING"
                 },
                 "category": {
+                    "allowNull": false,
                     "field": "category",
                     "seqType": "Sequelize.STRING"
                 },
@@ -108,6 +37,7 @@
                     "seqType": "Sequelize.INTEGER"
                 },
                 "description": {
+                    "allowNull": false,
                     "field": "description",
                     "seqType": "Sequelize.STRING"
                 },
@@ -120,147 +50,13 @@
                     "allowNull": false,
                     "field": "updatedAt",
                     "seqType": "Sequelize.DATE"
-                }
-            },
-            "indexes": []
-        },
-        "products": {
-            "tableName": "products",
-            "schema": {
-                "id": {
-                    "allowNull": false,
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER"
                 },
-                "product_id": {
-                    "field": "product_id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "seller_id": {
-                    "field": "seller_id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "product_name": {
-                    "allowNull": false,
-                    "field": "product_name",
-                    "seqType": "Sequelize.STRING"
-                },
-                "product_type": {
-                    "field": "product_type",
-                    "seqType": "Sequelize.STRING"
-                },
-                "category": {
-                    "field": "category",
-                    "seqType": "Sequelize.STRING"
-                },
-                "price": {
-                    "allowNull": false,
-                    "field": "price",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "description": {
-                    "field": "description",
-                    "seqType": "Sequelize.STRING"
-                },
-                "weight": {
-                    "field": "weight",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "zip_code": {
-                    "allowNull": false,
-                    "field": "zip_code",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "createdAt": {
-                    "allowNull": false,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updatedAt": {
-                    "allowNull": false,
-                    "field": "updatedAt",
-                    "seqType": "Sequelize.DATE"
-                }
-            },
-            "indexes": []
-        },
-        "sellers": {
-            "tableName": "sellers",
-            "schema": {
-                "id": {
-                    "allowNull": false,
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "seller_id": {
-                    "field": "seller_id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "first_name": {
-                    "allowNull": false,
-                    "field": "first_name",
-                    "seqType": "Sequelize.STRING"
-                },
-                "last_name": {
-                    "allowNull": false,
-                    "field": "last_name",
-                    "seqType": "Sequelize.STRING"
-                },
-                "email": {
-                    "allowNull": false,
-                    "unique": true,
-                    "field": "email",
-                    "seqType": "Sequelize.STRING"
-                },
-                "username": {
-                    "allowNull": false,
-                    "unique": true,
-                    "field": "username",
-                    "seqType": "Sequelize.STRING"
-                },
-                "password": {
-                    "allowNull": false,
-                    "field": "password",
-                    "seqType": "Sequelize.STRING"
-                },
-                "address": {
-                    "allowNull": false,
-                    "field": "address",
-                    "seqType": "Sequelize.STRING"
-                },
-                "city": {
-                    "allowNull": false,
-                    "field": "city",
-                    "seqType": "Sequelize.STRING"
-                },
-                "state": {
-                    "allowNull": false,
-                    "field": "state",
-                    "seqType": "Sequelize.STRING"
-                },
-                "zip_code": {
-                    "allowNull": false,
-                    "field": "zip_code",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "DOB": {
-                    "allowNull": false,
-                    "field": "DOB",
-                    "seqType": "Sequelize.STRING"
-                },
-                "createdAt": {
-                    "allowNull": false,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updatedAt": {
-                    "allowNull": false,
-                    "field": "updatedAt",
-                    "seqType": "Sequelize.DATE"
+                "post_delete": {
+                    "defaultValue": {
+                        "value": false
+                    },
+                    "field": "post_delete",
+                    "seqType": "Sequelize.BOOLEAN"
                 }
             },
             "indexes": []
@@ -269,8 +65,8 @@
             "tableName": "users",
             "schema": {
                 "user_id": {
-                    "allowNull": false,
                     "primaryKey": true,
+                    "allowNull": false,
                     "autoIncrement": true,
                     "field": "user_id",
                     "seqType": "Sequelize.INTEGER"
@@ -298,17 +94,14 @@
                     "seqType": "Sequelize.STRING"
                 },
                 "address": {
-                    "allowNull": false,
                     "field": "address",
                     "seqType": "Sequelize.STRING"
                 },
                 "city": {
-                    "allowNull": false,
                     "field": "city",
                     "seqType": "Sequelize.STRING"
                 },
                 "state": {
-                    "allowNull": false,
                     "field": "state",
                     "seqType": "Sequelize.STRING"
                 },
@@ -318,6 +111,8 @@
                     "seqType": "Sequelize.INTEGER"
                 },
                 "password": {
+                    "allowNull": false,
+                    "unique": true,
                     "field": "password",
                     "seqType": "Sequelize.STRING"
                 },
