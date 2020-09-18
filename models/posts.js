@@ -26,7 +26,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     category: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      defaultValue: "Misc."
     },
     price: {
       type: DataTypes.INTEGER,
