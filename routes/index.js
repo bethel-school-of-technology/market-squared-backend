@@ -15,13 +15,6 @@ router.get('/posts', function (req, res, next) {
   })
 });
 
-router.get('/profile/:id', function (req, res, next) {
-  models.users.findByPk(parseInt(req.params.id))
-    .then(user => {
-      res.json(user)
-    })
-});
-
 router.get('/myposts', function (req, res, next) {
   models.posts.findAll(
     { include: models.users }
@@ -126,7 +119,28 @@ router.post('/', function (req, res, next) {
 });
 
 
-//Create Post?
+router.post('/create/:id', function (req, res, next) {
+  let userId = parseInt(req.params.id);
+  models.posts
+  .findOrCreate({
+    where:{
+      user_id: userId,
+      title: req.body.title,
+      description: req.body.description,
+      category: req.body.category,
+      price: req.body.price
+    }
+  })
+  .spread(function (result, created) {
+    if(created, result) {
+      res.json(result);
+    }else{
+      res.json('There was a problem with your post.');
+    }
+  });
+});
+
+/*/Create Post?
 router.post('/create', function (req, res, next) {
   let token = req.headers["jwt"];
   console.log(token)
@@ -161,9 +175,26 @@ router.post('/create', function (req, res, next) {
       res.status(401);
       res.send('Must be logged in');
   }
+});*/
+
+
+
+
+//Get User Information
+router.get('/profile/:id', function (req, res, next) {
+  models.users.findByPk(parseInt(req.params.id))
+    .then(user => {
+      res.json(user);
+    })
 });
 
-
+// Get post information for edit
+router.get('/editpost/:id', function (req, res, next) {
+  models.posts.findByPk(parseInt(req.params.id))
+    .then(post => {
+      res.json(post);
+    })
+});
 
 // Update User
 router.put("/profile/:id", function (req, res, next) {
