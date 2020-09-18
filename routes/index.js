@@ -8,23 +8,21 @@ var authService = require('../services/auth');
 //Gets all posts into home page and asscociates them with their user
 // look into this route
 router.get('/posts', function (req, res, next) {
-  models.posts.findAll(
-    { include: models.users }
-  ).then(post => {
+  models.posts.findAll({ include: models.users , where: { post_delete: false }}).then(post => {
     res.json(post)
   })
 });
 
 router.get('/myposts', function (req, res, next) {
   models.posts.findAll(
-    { include: models.users }
+    { include: models.users , where: { post_delete: false }}
   ).then(post => {
     res.json(post)
   })
 });
 
 router.get('/myposts/:id', function (req, res, next) {
-  models.users.findByPk(parseInt(req.params.id), { include: models.posts })
+  models.users.findByPk(parseInt(req.params.id), { include: models.posts, where: {post_delete: false} })
     .then(post => {
       console.log(post)
       res.json(post)
@@ -80,7 +78,7 @@ router.post('/login', function (req, res, next) {
       let passwordMatch = authService.comparePasswords(req.body.password, user.password);
       if (passwordMatch) {
         let token = authService.signUser(user); // <--- Uses the authService to create jwt token
-        //res.cookie('jwt', token); // <--- Adds token to response as a cookie
+        res.setHeader('jwt', token); // <--- Adds token to response as a header
         res.json({ token });
       } else {
         // console.log('Wrong password');
@@ -208,6 +206,7 @@ router.put("/profile/:id", function (req, res, next) {
     });
 });
 
+// Logout User
 router.get('/logout', function (req, res, next) {
   localStorage.clear();
   res.send('Logout Succeeded');
@@ -223,6 +222,23 @@ router.put("/editpost/:id", function (req, res, next) {
     .catch(err => {
       res.status(400);
       res.send("There was a problem updating the post.  Please check the post information.");
+    });
+});
+
+//Delete
+router.delete('/myposts/:id', function(req, res, next) {
+  let postId = parseInt(req.params.id);
+  models.posts
+  .update(
+      { post_delete: true },
+      {
+        where: { post_id: postId }
+      }
+    )
+    .then(result => res.json(result))
+    .catch(err => {
+      res.status(400);
+      res.send("There was a problem deleting the post.");
     });
 });
 
