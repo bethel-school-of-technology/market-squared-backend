@@ -6,13 +6,13 @@ var models = require('../models');
 var authService = require('../services/auth');
 
 //Gets all posts into home page and asscociates them with their user
-// look into this route
 router.get('/posts', function (req, res, next) {
   models.posts.findAll({ include: models.users , where: { post_delete: false }}).then(post => {
     res.json(post)
   })
 });
 
+//Lists all posts into user's mypost page
 router.get('/myposts', function (req, res, next) {
   models.posts.findAll(
     { include: models.users , where: { post_delete: false }}
@@ -21,6 +21,7 @@ router.get('/myposts', function (req, res, next) {
   })
 });
 
+//Gets single post into user's mypost page
 router.get('/myposts/:id', function (req, res, next) {
   models.users.findByPk(parseInt(req.params.id), { include: models.posts, where: {post_delete: false} })
     .then(post => {
@@ -29,7 +30,7 @@ router.get('/myposts/:id', function (req, res, next) {
     })
 });
 
-
+//Gets single posts for single listing
 router.get('/post/:id', function (req, res, next) {
   models.posts.findByPk(parseInt(req.params.id), { include: models.users })
     .then(post => {
@@ -37,30 +38,6 @@ router.get('/post/:id', function (req, res, next) {
       res.json(post)
     })
 });
-
-
-// IS THIS STILL BEING USED?
-router.get('/profile', function (req, res, next) {
-  let token = req.headers["jwt"];
-  console.log(token)
-  if (token) {
-    authService.verifyUser(token).then(user => {
-      if (user) {
-        models.users.findOne({
-          where: {
-            username: user.username
-          }
-        }).then(user => {
-          res.json(user);
-        });
-      }
-    });
-  } else {
-    res.status(401);
-    res.send('Must be logged in');
-  }
-});
-
 
 // Login user and return JWT token
 router.post('/login', function (req, res, next) {
@@ -87,7 +64,6 @@ router.post('/login', function (req, res, next) {
     }
   });
 });
-
 
 // Creates a New User
 router.post('/', function (req, res, next) {
@@ -116,7 +92,7 @@ router.post('/', function (req, res, next) {
     });
 });
 
-
+// Create Post
 router.post('/create/:id', function (req, res, next) {
   let userId = parseInt(req.params.id);
   models.posts
@@ -137,46 +113,6 @@ router.post('/create/:id', function (req, res, next) {
     }
   });
 });
-
-/*/Create Post?
-router.post('/create', function (req, res, next) {
-  let token = req.headers["jwt"];
-  console.log(token)
-  if (token) {
-      authService.verifyUser(token).then(user => {
-          if (user) {
-            console.log(user)
-            models.posts
-            .findOrCreate({
-              where: {
-                
-                title: req.body.title,
-                
-              },
-              defaults: {
-                user_id: user.user_id,
-                description: req.body.description,
-                price: req.body.price,
-                category: req.body.category
-              }
-            })
-            .spread(function (result, created) {
-              if (created) {
-                res.send(result);
-              } else {
-                res.send('Error. Post not created');
-              }
-            });
-          }
-      });
-  } else {
-      res.status(401);
-      res.send('Must be logged in');
-  }
-});*/
-
-
-
 
 //Get User Information
 router.get('/profile/:id', function (req, res, next) {
@@ -212,7 +148,6 @@ router.get('/logout', function (req, res, next) {
   res.send('Logout Succeeded');
 });
 
-
 // Update Post
 router.put("/editpost/:id", function (req, res, next) {
   let postId = parseInt(req.params.id);
@@ -225,7 +160,7 @@ router.put("/editpost/:id", function (req, res, next) {
     });
 });
 
-//Delete
+//Delete Post
 router.delete('/myposts/:id', function(req, res, next) {
   let postId = parseInt(req.params.id);
   models.posts
@@ -340,3 +275,63 @@ router.put("/profile/:id", function (req, res, next) {
       res.send("There was a problem updating the user.  Please check the user information.");
     });
 });*/
+
+/*/Create Post?
+router.post('/create', function (req, res, next) {
+  let token = req.headers["jwt"];
+  console.log(token)
+  if (token) {
+      authService.verifyUser(token).then(user => {
+          if (user) {
+            console.log(user)
+            models.posts
+            .findOrCreate({
+              where: {
+                
+                title: req.body.title,
+                
+              },
+              defaults: {
+                user_id: user.user_id,
+                description: req.body.description,
+                price: req.body.price,
+                category: req.body.category
+              }
+            })
+            .spread(function (result, created) {
+              if (created) {
+                res.send(result);
+              } else {
+                res.send('Error. Post not created');
+              }
+            });
+          }
+      });
+  } else {
+      res.status(401);
+      res.send('Must be logged in');
+  }
+});*/
+
+/*
+// IS THIS STILL BEING USED?
+router.get('/profile', function (req, res, next) {
+  let token = req.headers["jwt"];
+  console.log(token)
+  if (token) {
+    authService.verifyUser(token).then(user => {
+      if (user) {
+        models.users.findOne({
+          where: {
+            username: user.username
+          }
+        }).then(user => {
+          res.json(user);
+        });
+      }
+    });
+  } else {
+    res.status(401);
+    res.send('Must be logged in');
+  }
+}); */
